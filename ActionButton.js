@@ -52,7 +52,7 @@ export default class ActionButton extends Component {
   }
 
   getActionButtonStyle() {
-    return [styles.actionBarItem, this.getButtonSize()];
+    return [styles.actionBarItem, this.getButtonSize(),this.props.style];
   }
 
   getActionContainerStyle() {
@@ -63,7 +63,7 @@ export default class ActionButton extends Component {
     }];
   }
   getActionsStyle() {
-    return [this.getButtonSize()];
+    return [this.getButtonSize(),this.props.style];
   }
 
   getButtonSize() {
@@ -96,13 +96,14 @@ export default class ActionButton extends Component {
 
     setTimeout(() => {
       this.setState({ active: false });
+      this.props.onInActive && this.props.onInActive()
     }, 250);
   }
 
   renderButton() {
     return (
       <View
-        style={this.getActionButtonStyle()}
+        style={[this.getActionButtonStyle()]}
       >
         <TouchableOpacity
           activeOpacity={0.85}
@@ -185,7 +186,7 @@ export default class ActionButton extends Component {
 
           <View
             pointerEvents="box-none"
-            style={this.getActionContainerStyle()}
+            style={[this.getActionContainerStyle()]}
           >
             <ActionButtonItem
               key={index}
@@ -195,6 +196,7 @@ export default class ActionButton extends Component {
               radius={this.props.radius}
               angle={startRadian + index * offset}
               btnColor={this.props.btnOutRange}
+              style={this.props.styleItem}
               {...button.props}
               onPress={() => {
                   if (this.props.autoInactive) {
@@ -246,7 +248,7 @@ export default class ActionButton extends Component {
           pointerEvents="box-none"
           style={this.getActionContainerStyle()}
         >
-          {this.renderButton()}
+          {this.props.renderButton? this.props.renderButton({style:this.getActionButtonStyle()}) : this.renderButton()}
         </View>
       </View>
     );
